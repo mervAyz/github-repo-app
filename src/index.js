@@ -8,9 +8,6 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 const client = new ApolloClient({
   uri: 'https://api.github.com/graphql', // GitHub GraphQL API endpoint
   cache: new InMemoryCache(),
-  headers: {
-    Authorization: `Bearer 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`, // Replace with your GitHub personal access token
-  },
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
