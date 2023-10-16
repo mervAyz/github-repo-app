@@ -1,13 +1,18 @@
-import React, { useState,useContext,useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { gql } from 'graphql-tag';
 import { useAppState } from './AppStateContext';
 
 const GET_USER_REPOSITORIES = gql`
-  query GetUserRepositories($username: String!) {
+  query GetUserRepositories($username: String!, $first: Int, $afterCursor: String) {
     user(login: $username) {
-      repositories(first: 10) {
+      repositories(first: $first, after: $afterCursor) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
         edges {
+          cursor
           node {
             name
           }
@@ -18,22 +23,26 @@ const GET_USER_REPOSITORIES = gql`
 `;
 
 function UserRepositories() {
-  const { state,dispatch } = useAppState();
-  const [getRepositories, { loading, error, data}] = useLazyQuery(GET_USER_REPOSITORIES);
+  const { state, dispatch } = useAppState();
+  const [getRepositories, { loading, error, data }] = useLazyQuery(GET_USER_REPOSITORIES);
 
   const handleSearch = () => {
-    getRepositories({ variables: { username: state.username } });
+    dispatch({ type: 'SET_REPOSITORIES', payload: [] });
+    getRepositories({ variables: { username: state.username, first: 10, afterCursor: null } });
+  };
+
+  const handleLoadMore = () => {
+      const afterCursor = data.user.repositories.pageInfo.endCursor;
+      getRepositories({ variables: { username: state.username, first: 10, afterCursor } });
+    
   };
 
   useEffect(() => {
     if (data) {
-      if (data.user && data.user.repositories.edges.length > 0) {
-        dispatch({ type: 'SET_REPOSITORIES', payload: data.user.repositories.edges });
-      } else {
-        dispatch({ type: 'SET_REPOSITORIES', payload: [] });
-      }
+      const newRepos = data.user.repositories.edges.map((edge) => edge.node);
+        dispatch({ type: 'SET_REPOSITORIES', payload: [...state.repositories, ...newRepos] });
     }
-  }, [data, dispatch]);
+  }, [data]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -50,11 +59,14 @@ function UserRepositories() {
       {state.repositories.length > 0 && (
         <div>
           <h2>Repositories for {state.username}:</h2>
-          <ul>
+          <ol>
             {state.repositories.map((repo, index) => (
-              <li key={index}>{repo.node.name}</li>
+              <li key={index}>{repo.name}</li>
             ))}
-          </ul>
+          </ol>
+          {data.user.repositories.pageInfo.hasNextPage && (
+            <button onClick={handleLoadMore}>Load More</button>
+          )}
         </div>
       )}
     </div>

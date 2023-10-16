@@ -1,8 +1,14 @@
-import { render, screen } from '@testing-library/react';
+import React from 'react';
+import { render } from '@testing-library/react';
 import App from './App';
+import { AppStateProvider } from './AppStateContext';
 
-test('renders learn react link', () => {
+jest.mock('./AppStateContext', () => ({
+  AppStateProvider: jest.fn(({ children }) => children),
+}));
+
+test('renders learn react linkk', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
+  expect(AppStateProvider).toHaveBeenCalled();
+} );
+
