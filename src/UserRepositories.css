@@ -40,10 +40,8 @@ div {
     margin-top: 20px;
   }
   
-ol {
-    list-style: none;
+  ol {
     padding: 0;
-    counter-reset: item; 
   }
   
   li {
@@ -54,16 +52,12 @@ ol {
     border-radius: 5px;
     text-align: left;
     position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   
-  li:before {
-    counter-increment: item; 
-    content: counter(item); 
-    position: absolute;
-    left: -30px; 
-    font-weight: bold; 
-    }
-
+  
 
   button {
     margin-top: 10px;
