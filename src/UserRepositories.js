@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { gql } from 'graphql-tag';
 import { useAppState } from './AppStateContext';
+import './UserRepositories.css'
 
 const GET_USER_REPOSITORIES = gql`
   query GetUserRepositories($username: String!, $first: Int, $afterCursor: String) {
