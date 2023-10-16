@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Modal, Backdrop, Fade } from '@mui/material';
 import './RepositoryDetails.css';
 
-function RepositoryDetails({ repo}) {
+function RepositoryDetails({ repo }) {
   const [showModal, setShowModal] = useState(false);
 
   const handleClose = () => setShowModal(false);
@@ -10,7 +10,7 @@ function RepositoryDetails({ repo}) {
 
   return (
     <div>
-      <Button variant="contained" color="primary" onClick={handleShow} className="button-details"> {/* Apply the button-details class here */}
+      <Button variant="contained" color="primary" onClick={handleShow} className="button-details"> 
         Details
       </Button>
       <Modal
@@ -22,16 +22,16 @@ function RepositoryDetails({ repo}) {
         <Fade in={showModal}>
           <div className="modal-paper">
             <h2 className="modal-title">Repository Details</h2>
-            <p>Watchers: {repo.watchers.totalCount}</p>
-            <p>Forks: {repo.forks.totalCount}</p>
-            <p>Stars: {repo.stargazers.totalCount}</p>
+            <p>Watchers: {repo?.watchers?.totalCount}</p>
+            <p>Forks: {repo?.forks?.totalCount}</p>
+            <p>Stars: {repo?.stargazers?.totalCount}</p>
             <p>Languages:</p>
             <ul>
-              {repo.languages.edges.map((edge, index) => (
-                <li key={index}>{edge.node.name}</li>
+              {repo?.languages?.edges?.map((edge, index) => (
+                <li key={index}>{edge?.node?.name}</li>
               ))}
             </ul>
-            <Button variant="contained" color="secondary" onClick={handleClose} className="modal-footer"> {/* Apply the modal-footer class here */}
+            <Button variant="contained" color="secondary" onClick={handleClose} className="modal-footer"> 
               Close
             </Button>
           </div>
