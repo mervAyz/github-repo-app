@@ -5,7 +5,7 @@ import { useAppState } from './AppStateContext';
 import './UserRepositories.css';
 import RepositoryDetails from './RepositoryDetails';
 
-const GET_USER_REPOSITORIES = gql`
+export const GET_USER_REPOSITORIES = gql`
   query GetUserRepositories($username: String!, $first: Int, $afterCursor: String) {
     user(login: $username) {
       repositories(first: $first, after: $afterCursor) {

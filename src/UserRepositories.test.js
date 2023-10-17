@@ -1,47 +1,98 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent,waitFor } from '@testing-library/react';
+import { MockedProvider } from '@apollo/client/testing'; 
 import UserRepositories from './UserRepositories';
 import { AppStateProvider } from './AppStateContext';
-import { MockedProvider } from '@apollo/client/testing';
+import '@testing-library/jest-dom'
 import { GET_USER_REPOSITORIES } from './UserRepositories';
 
-const mocks = [
-    {
+
+const mocks = [] 
+
+describe('UserRepositories component', () => {
+  it('renders UserRepositories component', async () => {
+    render(
+      <MockedProvider mocks={mocks} addTypename={false}>
+        <AppStateProvider>
+          <UserRepositories />
+        </AppStateProvider>
+      </MockedProvider>
+    );
+    const searchButton = screen.getByText('Search');
+    expect(searchButton).toBeInTheDocument();
+  });
+
+  it('updates the state with the entered username', async () => {
+    render(
+      <MockedProvider mocks={[]} addTypename={false}>
+        <AppStateProvider>
+          <UserRepositories />
+        </AppStateProvider>
+      </MockedProvider>
+    );
+
+    const usernameInput = await screen.findByPlaceholderText('Enter GitHub username');
+    fireEvent.change(usernameInput, { target: { value: 'newusername' } });
+
+    expect(usernameInput.value).toBe('newusername');
+  });
+  
+  it('loads more repositories when the "Load More" button is clicked', async () => {
+    const loadMoreMock = {
         request: {
-        query: GET_USER_REPOSITORIES,
-        variables: { username: 'test', first: 10, afterCursor: null },
+          query: GET_USER_REPOSITORIES,
+          variables: {
+            username: 'testuser',
+            first: 10,
+            afterCursor: 'someCursor',
+          },
         },
         result: {
-        data: {
+          data: {
             user: {
-            repositories: {
+              repositories: {
                 pageInfo: {
-                hasNextPage: true,
-                endCursor: 'Y3Vyc29yOjA=',
+                  hasNextPage: false,
+                  endCursor: 'newCursor',
                 },
                 edges: [
-                {
-                    cursor: 'Y3Vyc29yOjA=',
+                  {
+                    cursor: 'repo3Cursor',
                     node: {
-                    name: 'test-repo-1',
+                      name: 'Repo3',
+                      watchers: { totalCount: 10 },
+                      forks: { totalCount: 5 },
+                      stargazers: { totalCount: 20 },
+                      languages: {
+                        edges: [
+                          { node: { name: 'JavaScript' } },
+                          { node: { name: 'Python' } },
+                        ],
+                      },
                     },
-                },
+                  },
                 ],
+              },
             },
-            },
+          },
         },
-        },
-    },
-    ];
+      };
+      
 
-test('renders UserRepositories component', () => {
     render(
-        <MockedProvider mocks={mocks} addTypename={false}>
-            <AppStateProvider>
-                <UserRepositories />
-            </AppStateProvider>
-        </MockedProvider>
+      <MockedProvider mocks={[loadMoreMock]} addTypename={false}>
+        <AppStateProvider>
+          <UserRepositories />
+        </AppStateProvider>
+      </MockedProvider>
     );
-    const inputElement = screen.getByPlaceholderText(/Enter GitHub username/i);
-    expect(inputElement).toBeInTheDocument();
+
+    await waitFor(() => {
+        const loadMoreButton = screen.queryByRole('button', { name: 'Load More' });
+        if (loadMoreButton) {
+          fireEvent.click(loadMoreButton);
+        }
+      });
+    }
+    );
 });
