@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent,waitFor } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing'; 
-import UserRepositories from './UserRepositories';
-import { AppStateProvider } from './AppStateContext';
+import UserRepositories from '../UserRepositories';
+import { AppStateProvider } from '../../../AppStateContext';
 import '@testing-library/jest-dom'
-import { GET_USER_REPOSITORIES } from './UserRepositories';
+import { GET_USER_REPOSITORIES } from '../UserRepositories';
 
 
 const mocks = [] 

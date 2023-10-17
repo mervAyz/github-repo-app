@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-import RepositoryDetails from './RepositoryDetails';
+import RepositoryDetails from '../RepositoryDetails';
 import '@testing-library/jest-dom'
 
 test('renders repository details', async () => {

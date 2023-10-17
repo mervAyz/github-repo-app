@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import UserRepositories from './UserRepositories';
+import UserRepositories from './components/UserRepositories/UserRepositories';
 import { AppStateProvider } from './AppStateContext';
 
 function App() {

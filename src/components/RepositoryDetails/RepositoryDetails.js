@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Modal, Backdrop, Fade } from '@mui/material';
-import './RepositoryDetails.css';
+import '../../style/RepositoryDetails.css';
 
 function RepositoryDetails({ repo }) {
   const [showModal, setShowModal] = useState(false);
