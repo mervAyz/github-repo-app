@@ -14,7 +14,6 @@ export const useAppState = () => {
 };
 
 const appStateReducer = (state, action) => {
-  console.log("state",state)
   switch (action.type) {
     case 'SET_USERNAME':
       return { ...state, username: action.payload };

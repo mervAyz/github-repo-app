@@ -43,9 +43,12 @@ export const GET_USER_REPOSITORIES = gql`
 function UserRepositories() {
   const { state, dispatch } = useAppState();
   const [getRepositories, { loading, error, data }] = useLazyQuery(GET_USER_REPOSITORIES);
+  const [searchedUser, setSearchedUser] = useState(null);
 
 
   const handleSearch = () => {
+    setSearchedUser(state.username);
+    if(state.username === searchedUser) return;
     dispatch({ type: 'SET_REPOSITORIES', payload: [] });
     getRepositories({ variables: { username: state.username, first: 10, afterCursor: null } });
   };
