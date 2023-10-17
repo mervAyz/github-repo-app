@@ -1,4 +1,24 @@
-# Getting Started with Create React App
+
+# GITHUB REPO SEARCHING APP 
+
+## IMPORTANT
+
+First you should run this command 
+# `npm i`
+
+I removed personal token from index.js , so if you want to reach the api , you should get one. [Github Personal Token](https://docs.github.com/en/enterprise-server@3.6/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
+
+To use the personal token, modify the following code snippet in index.js.
+
+export const client = new ApolloClient({
+  uri: 'api', // GitHub GraphQL API endpoint
+  cache: new InMemoryCache(),
+  headers: {
+    Authorization: `YOUR_PERSONAL_TOKEN`, // Replace with your GitHub personal access token
+  },
+});
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
