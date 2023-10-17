@@ -14,7 +14,7 @@ export const client = new ApolloClient({
   uri: 'api', // GitHub GraphQL API endpoint
   cache: new InMemoryCache(),
   headers: {
-    Authorization: `YOUR_PERSONAL_TOKEN`, // Replace with your GitHub personal access token
+    Authorization: `Bearer YOUR_PERSONAL_TOKEN`, // Replace with your GitHub personal access token
   },
 });
 
