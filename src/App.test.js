@@ -2,18 +2,22 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
 import { AppStateProvider } from './AppStateContext';
-import { useAppState } from './AppStateContext';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { MockedProvider } from '@apollo/client/testing';
+import client from './index';
 
 jest.mock('./AppStateContext', () => ({
   AppStateProvider: jest.fn(({ children }) => children),
-  useAppState: jest.fn().mockReturnValue({ state: { username: 'test' } }),
 }));
 
 test('renders learn react link', () => {
+  
   render(
-    <AppStateProvider>
-      <App />
-    </AppStateProvider>
+    <ApolloProvider client={client}>
+      <AppStateProvider>
+        <App />
+      </AppStateProvider>
+    </ApolloProvider>
   );
 
   const linkElement = screen.getByText(/GitHub Repositories/i);

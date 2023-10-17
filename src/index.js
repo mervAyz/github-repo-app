@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
-const client = new ApolloClient({
+export const client = new ApolloClient({
   uri: 'https://api.github.com/graphql', // GitHub GraphQL API endpoint
   cache: new InMemoryCache(),
 });
